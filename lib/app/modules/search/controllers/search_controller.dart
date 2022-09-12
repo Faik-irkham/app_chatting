@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -5,6 +6,54 @@ class SearchController extends GetxController {
   //TODO: Implement SearchController
 
   late TextEditingController searchC;
+
+  // fungsi untuk search user
+
+  var queryAwal = [].obs;
+  var tempSearch = [].obs;
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  void searchFriend(String data) async {
+    print("SEARCH : $data");
+    if (data.length == 0) {
+      queryAwal.value = [];
+      tempSearch.value = [];
+    } else {
+      var capitalized = data.substring(0, 1).toUpperCase() + data.substring(1);
+      print(capitalized);
+
+      if (queryAwal.length == 0 && data.length == 1) {
+        // fungsi akan dijalankan pada 1 huruf ketikan pertama
+        CollectionReference clients = await firestore.collection("clients");
+        final keyNamaResult = await clients
+            .where("keyNama", isEqualTo: data.substring(0, 1).toUpperCase())
+            .get();
+
+        print("TOTAL DATA : ${keyNamaResult.docs.length}");
+        if (keyNamaResult.docs.length > 0) {
+          for (int i = 0; i < keyNamaResult.docs.length; i++) {
+            queryAwal.add(keyNamaResult.docs[i].data() as Map<String, dynamic>);
+          }
+          print("QUERY RESULT : ");
+          print(queryAwal);
+        } else {
+          print("TIDAK ADA DATA");
+        }
+      }
+
+      if (queryAwal.length != 0) {
+        tempSearch.value = [];
+        queryAwal.forEach((element) {
+          if (element["nama"].startsWith(capitalized)) {
+            tempSearch.add(element);
+          }
+        });
+      }
+    }
+    queryAwal.refresh();
+    tempSearch.refresh();
+  }
 
   @override
   void onInit() {

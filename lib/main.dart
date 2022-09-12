@@ -5,8 +5,6 @@ import 'package:get_storage/get_storage.dart';
 
 import 'app/controllers/auth_controller.dart';
 import 'app/routes/app_pages.dart';
-import 'app/utils/error_screen.dart';
-import 'app/utils/loading_screen.dart';
 import 'app/utils/splash_screen.dart';
 
 Future<void> main() async {

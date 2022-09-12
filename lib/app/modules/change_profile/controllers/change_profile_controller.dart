@@ -13,6 +13,7 @@ class ChangeProfileController extends GetxController {
     emailC = TextEditingController();
     nameC = TextEditingController();
     statusC = TextEditingController();
+    super.onInit();
   }
 
   @override
