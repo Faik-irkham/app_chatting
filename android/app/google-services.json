@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "270683717905",
+    "project_id": "appchat-b45bb",
+    "storage_bucket": "appchat-b45bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270683717905:android:24b72826ec775ebee0ccb0",
+        "android_client_info": {
+          "package_name": "com.faikirkham.app_chatting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270683717905-5rlnpruhd1u8c2c6b1g9b5l0squebfbl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.faikirkham.app_chatting",
+            "certificate_hash": "bff823daa4bc6aa0ea1583100b64080dd20204a4"
+          }
+        },
+        {
+          "client_id": "270683717905-a6gr2vi7cpchfc26ipu1pvg1mri869v0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn83E1oI03UFHqNT6b1kcZnn5mnnbLCKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270683717905-a6gr2vi7cpchfc26ipu1pvg1mri869v0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
