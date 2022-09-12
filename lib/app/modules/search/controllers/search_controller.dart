@@ -14,7 +14,7 @@ class SearchController extends GetxController {
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  void searchFriend(String data) async {
+  void searchFriend(String data, String email) async {
     print("SEARCH : $data");
     if (data.length == 0) {
       queryAwal.value = [];
@@ -25,9 +25,10 @@ class SearchController extends GetxController {
 
       if (queryAwal.length == 0 && data.length == 1) {
         // fungsi akan dijalankan pada 1 huruf ketikan pertama
-        CollectionReference clients = await firestore.collection("clients");
-        final keyNamaResult = await clients
+        CollectionReference users = await firestore.collection("clients");
+        final keyNamaResult = await users
             .where("keyNama", isEqualTo: data.substring(0, 1).toUpperCase())
+            .where("email", isNotEqualTo: email)
             .get();
 
         print("TOTAL DATA : ${keyNamaResult.docs.length}");

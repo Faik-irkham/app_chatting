@@ -1,0 +1,23 @@
+{
+    "uid": "ENh8IPanVsR0337DaJnIT0cfDgo2",
+    "nama": "Kadimin Min",
+    "keyNama": "K",
+    "email": "kadimin50@gmail.com",
+    "creationTime": "2022-07-12T15:30:05.561",
+    "lastSignInTime": "2022-09-12T17:29:45.079",
+    "photoUrl": "https://lh3.googleusercontent.com/a/AItbvmm3BsLvnoFch4WplcHdtfdG-nPoLNFr3XKfjt8E=s96-c",
+    "status": "hallo",
+    "updateTime": "2022-09-11T15:15:28.748721",
+    "chats": [
+        {
+            "connection": "faikrosesbejo@gmail.com",
+            "chat_id": "R0337DaJnIT0cfDgo2ENh8IPanVs",
+            "lastTime": "2022-09-12T17:10:40.647543"
+        },
+        {
+            "connection": "kadimin50@gmail.com",
+            "chat_id": "R0337DaJnIT0cfDgo2ENh8IPanVs",
+            "lastTime": "2022-09-10T17:10:40.647543"
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-import 'package:app_chatting/app/data/models/user_model.dart';
+import 'package:app_chatting/app/data/models/users_model.dart';
 import 'package:app_chatting/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +16,7 @@ class AuthController extends GetxController {
   GoogleSignInAccount? _currentUser;
   UserCredential? userCredential;
 
-  var user = UserModel().obs;
+  var user = UsersModel().obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -66,7 +66,7 @@ class AuthController extends GetxController {
         // masukan data ke database firebase
         CollectionReference users = firestore.collection('users');
 
-        users.doc(_currentUser!.email).update({
+        await users.doc(_currentUser!.email).update({
           "lastSignInTime":
               userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
         });
@@ -74,16 +74,7 @@ class AuthController extends GetxController {
         final currUser = await users.doc(_currentUser!.email).get();
         final currUserData = currUser.data() as Map<String, dynamic>;
 
-        user(UserModel(
-          uid: currUserData['uid'],
-          nama: currUserData['nama'],
-          email: currUserData['email'],
-          photoUrl: currUserData['photoUrl'],
-          status: currUserData['status'],
-          creationTime: currUserData['creationTime'],
-          lastSignInTime: currUserData['lastSignInTime'],
-          updateTime: currUserData['updateTime'],
-        ));
+        user(UsersModel.fromJson(currUserData));
 
         return true;
       }
@@ -140,9 +131,10 @@ class AuthController extends GetxController {
         final checkUser = await users.doc(_currentUser!.email).get();
 
         if (checkUser.data() == null) {
-          users.doc(_currentUser!.email).set({
+          await users.doc(_currentUser!.email).set({
             "uid": userCredential!.user!.uid,
             "nama": _currentUser!.displayName,
+            "keyNama": _currentUser!.displayName!.substring(0, 1).toUpperCase(),
             "email": _currentUser!.email,
             "photoUrl": _currentUser!.photoUrl ?? "NoImage",
             "status": '',
@@ -151,9 +143,10 @@ class AuthController extends GetxController {
             "lastSignInTime": userCredential!.user!.metadata.lastSignInTime!
                 .toIso8601String(),
             "updateTime": DateTime.now().toIso8601String(),
+            "chats": [],
           });
         } else {
-          users.doc(_currentUser!.email).update({
+          await users.doc(_currentUser!.email).update({
             "lastSignInTime": userCredential!.user!.metadata.lastSignInTime!
                 .toIso8601String(),
           });
@@ -162,16 +155,7 @@ class AuthController extends GetxController {
         final currUser = await users.doc(_currentUser!.email).get();
         final currUserData = currUser.data() as Map<String, dynamic>;
 
-        user(UserModel(
-          uid: currUserData['uid'],
-          nama: currUserData['nama'],
-          email: currUserData['email'],
-          photoUrl: currUserData['photoUrl'],
-          status: currUserData['status'],
-          creationTime: currUserData['creationTime'],
-          lastSignInTime: currUserData['lastSignInTime'],
-          updateTime: currUserData['updateTime'],
-        ));
+        user(UsersModel.fromJson(currUserData));
 
         isAuth.value = true;
         Get.offAllNamed(Routes.HOME);
@@ -200,6 +184,7 @@ class AuthController extends GetxController {
 
     users.doc(_currentUser!.email).update({
       "nama": nama,
+      "keyNama": nama.substring(0, 1).toUpperCase(),
       "status": status,
       "lastSignInTime":
           userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
@@ -209,6 +194,7 @@ class AuthController extends GetxController {
     // update model
     user.update((user) {
       user!.nama = nama;
+      user.keyNama = nama.substring(0, 1).toUpperCase();
       user.status = status;
       user.lastSignInTime =
           userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
