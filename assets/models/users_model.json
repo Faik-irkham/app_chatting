@@ -1,23 +1,25 @@
 {
     "uid": "ENh8IPanVsR0337DaJnIT0cfDgo2",
-    "nama": "Kadimin Min",
-    "keyNama": "K",
+    "name": "Kadimin Min",
+    "keyName": "K",
     "email": "kadimin50@gmail.com",
     "creationTime": "2022-07-12T15:30:05.561",
     "lastSignInTime": "2022-09-12T17:29:45.079",
     "photoUrl": "https://lh3.googleusercontent.com/a/AItbvmm3BsLvnoFch4WplcHdtfdG-nPoLNFr3XKfjt8E=s96-c",
     "status": "hallo",
-    "updateTime": "2022-09-11T15:15:28.748721",
+    "updatedTime": "2022-09-11T15:15:28.748721",
     "chats": [
         {
-            "connection": "faikrosesbejo@gmail.com",
-            "chat_id": "R0337DaJnIT0cfDgo2ENh8IPanVs",
-            "lastTime": "2022-09-12T17:10:40.647543"
+            "connection": "fitriani@gmail.com",
+            "chat_id": "RO337DaJnITOcfDgo2ENh8IPanVs",
+            "lastTime": "2021-08-25T13:29:02.748721",
+            "total_unread": 0
         },
         {
-            "connection": "kadimin50@gmail.com",
-            "chat_id": "R0337DaJnIT0cfDgo2ENh8IPanVs",
-            "lastTime": "2022-09-10T17:10:40.647543"
+            "connection": "daniel@gmail.com",
+            "chat_id": "JnITOcfDgo2ENh8IPanVsRO337Da",
+            "lastTime": "2021-09-25T13:28:59.748721",
+            "total_unread": 0
         }
     ]
 }

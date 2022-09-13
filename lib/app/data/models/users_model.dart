@@ -12,8 +12,8 @@ String usersModelToJson(UsersModel data) => json.encode(data.toJson());
 class UsersModel {
   UsersModel({
     this.uid,
-    this.nama,
-    this.keyNama,
+    this.name,
+    this.keyName,
     this.email,
     this.creationTime,
     this.lastSignInTime,
@@ -24,33 +24,33 @@ class UsersModel {
   });
 
   String? uid;
-  String? nama;
-  String? keyNama;
+  String? name;
+  String? keyName;
   String? email;
   String? creationTime;
   String? lastSignInTime;
   String? photoUrl;
   String? status;
   String? updateTime;
-  List<Chat>? chats;
+  List<ChatUser>? chats;
 
   factory UsersModel.fromJson(Map<String, dynamic> json) => UsersModel(
         uid: json["uid"],
-        nama: json["nama"],
-        keyNama: json["keyNama"],
+        name: json["name"],
+        keyName: json["keyName"],
         email: json["email"],
         creationTime: json["creationTime"],
         lastSignInTime: json["lastSignInTime"],
         photoUrl: json["photoUrl"],
         status: json["status"],
         updateTime: json["updateTime"],
-        chats: List<Chat>.from(json["chats"].map((x) => Chat.fromJson(x))),
+        chats: List<ChatUser>.from(json["chats"].map((x) => ChatUser.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "uid": uid,
-        "nama": nama,
-        "keyNama": keyNama,
+        "name": name,
+        "keyName": keyName,
         "email": email,
         "creationTime": creationTime,
         "lastSignInTime": lastSignInTime,
@@ -61,8 +61,8 @@ class UsersModel {
       };
 }
 
-class Chat {
-  Chat({
+class ChatUser {
+  ChatUser({
     this.connection,
     this.chatId,
     this.lastTime,
@@ -72,7 +72,7 @@ class Chat {
   String? chatId;
   String? lastTime;
 
-  factory Chat.fromJson(Map<String, dynamic> json) => Chat(
+  factory ChatUser.fromJson(Map<String, dynamic> json) => ChatUser(
         connection: json["connection"],
         chatId: json["chat_id"],
         lastTime: json["lastTime"],

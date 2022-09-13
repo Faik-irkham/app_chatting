@@ -133,8 +133,8 @@ class AuthController extends GetxController {
         if (checkUser.data() == null) {
           await users.doc(_currentUser!.email).set({
             "uid": userCredential!.user!.uid,
-            "nama": _currentUser!.displayName,
-            "keyNama": _currentUser!.displayName!.substring(0, 1).toUpperCase(),
+            "name": _currentUser!.displayName,
+            "keyName": _currentUser!.displayName!.substring(0, 1).toUpperCase(),
             "email": _currentUser!.email,
             "photoUrl": _currentUser!.photoUrl ?? "NoImage",
             "status": '',
@@ -176,15 +176,15 @@ class AuthController extends GetxController {
 
   // Profile
 
-  void changeProfile(String nama, String status) {
+  void changeProfile(String name, String status) {
     String date = DateTime.now().toIso8601String();
 
     // update firebase profile
     CollectionReference users = firestore.collection('users');
 
     users.doc(_currentUser!.email).update({
-      "nama": nama,
-      "keyNama": nama.substring(0, 1).toUpperCase(),
+      "name": name,
+      "keyName": name.substring(0, 1).toUpperCase(),
       "status": status,
       "lastSignInTime":
           userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
@@ -193,8 +193,8 @@ class AuthController extends GetxController {
 
     // update model
     user.update((user) {
-      user!.nama = nama;
-      user.keyNama = nama.substring(0, 1).toUpperCase();
+      user!.name = name;
+      user.keyName = name.substring(0, 1).toUpperCase();
       user.status = status;
       user.lastSignInTime =
           userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
@@ -234,5 +234,81 @@ class AuthController extends GetxController {
       title: 'SUKSES',
       middleText: 'update status success',
     );
+  }
+
+  // Search
+
+  // fungsi connection chat
+  void addNewConnection(String friendEmail) async {
+    bool flagNewConnection = false;
+    var chat_id;
+    String date = DateTime.now().toIso8601String();
+    CollectionReference chats = firestore.collection("chats");
+    CollectionReference users = firestore.collection("users");
+
+    final docUser = await users.doc(_currentUser!.email).get();
+    final docChats = (docUser.data() as Map<String, dynamic>)["chats"] as List;
+
+    if (docChats.length != 0) {
+      // user sudah pernah chat dengan siapapun
+
+      docChats.forEach((singleChat) {
+        if (singleChat["connection"] == friendEmail) {
+          chat_id = singleChat["chat_id"];
+        }
+      });
+
+      if (chat_id != null) {
+        // sudah pernah buat koneksi => friendEmail
+        flagNewConnection = false;
+      } else {
+        // blm pernah buat koneksi => friendEmail
+        // buat koneksi baru...
+        flagNewConnection = true;
+      }
+    } else {
+      // blm pernah chat dengan siapapun
+      // buat koneksi baru...
+      flagNewConnection = true;
+    }
+
+    if (flagNewConnection) {
+      final newChatDoc = await chats.add({
+        "connection": [
+          _currentUser!.email,
+          friendEmail,
+        ],
+        "total_chats": 0,
+        "total_read": 0,
+        "total_unread": 0,
+        "chat": [],
+        "lastTime": date,
+      });
+
+      await users.doc(_currentUser!.email).update({
+        "chats": [
+          {
+            "connection": friendEmail,
+            "chat_id": newChatDoc.id,
+            "lastTime": date,
+          }
+        ],
+      });
+      user.update((user) {
+        user!.chats = [
+          ChatUser(
+            chatId: newChatDoc.id,
+            connection: friendEmail,
+            lastTime: date,
+          )
+        ];
+      });
+
+      chat_id = newChatDoc.id;
+      user.refresh();
+    }
+
+    print(chat_id);
+    Get.toNamed(Routes.CHAT_ROOM, arguments: chat_id);
   }
 }

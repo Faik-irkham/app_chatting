@@ -25,16 +25,16 @@ class SearchController extends GetxController {
 
       if (queryAwal.length == 0 && data.length == 1) {
         // fungsi akan dijalankan pada 1 huruf ketikan pertama
-        CollectionReference users = await firestore.collection("clients");
-        final keyNamaResult = await users
-            .where("keyNama", isEqualTo: data.substring(0, 1).toUpperCase())
+        CollectionReference users = await firestore.collection("users");
+        final keyNameResult = await users
+            .where("keyName", isEqualTo: data.substring(0, 1).toUpperCase())
             .where("email", isNotEqualTo: email)
             .get();
 
-        print("TOTAL DATA : ${keyNamaResult.docs.length}");
-        if (keyNamaResult.docs.length > 0) {
-          for (int i = 0; i < keyNamaResult.docs.length; i++) {
-            queryAwal.add(keyNamaResult.docs[i].data() as Map<String, dynamic>);
+        print("TOTAL DATA : ${keyNameResult.docs.length}");
+        if (keyNameResult.docs.length > 0) {
+          for (int i = 0; i < keyNameResult.docs.length; i++) {
+            queryAwal.add(keyNameResult.docs[i].data() as Map<String, dynamic>);
           }
           print("QUERY RESULT : ");
           print(queryAwal);
@@ -46,7 +46,7 @@ class SearchController extends GetxController {
       if (queryAwal.length != 0) {
         tempSearch.value = [];
         queryAwal.forEach((element) {
-          if (element["nama"].startsWith(capitalized)) {
+          if (element["name"].startsWith(capitalized)) {
             tempSearch.add(element);
           }
         });

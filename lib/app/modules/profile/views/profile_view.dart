@@ -52,7 +52,7 @@ class ProfileView extends GetView<ProfileController> {
                     ),
                   ),
                   Obx(() => Text(
-                    '${authC.user.value.nama!}',
+                    '${authC.user.value.name!}',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,

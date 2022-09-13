@@ -12,7 +12,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
   @override
   Widget build(BuildContext context) {
     controller.emailC.text = authC.user.value.email!;
-    controller.nameC.text = authC.user.value.nama!;
+    controller.nameC.text = authC.user.value.name!;
     controller.statusC.text = authC.user.value.status!;
     return Scaffold(
       appBar: AppBar(

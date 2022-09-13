@@ -1,11 +1,8 @@
 {
-    "connection": [
+    "connections": [
         "kadimin50@gmail.caom",
         "faikrosesbejo@gmail.com"
     ],
-    "total_chats": 10,
-    "total_read": 8,
-    "unread": 2,
     "chat": [
         {
             "pengirim": "kadimin50@gmail.com",
@@ -21,6 +18,5 @@
             "time": "2022-09-12T17:10:40.647543",
             "isRead": false
         }
-    ],
-    "lastTime": "2022:09-12T16:08:01.214598"
+    ]
 }

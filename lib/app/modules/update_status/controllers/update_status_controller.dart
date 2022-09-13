@@ -11,12 +11,13 @@ class UpdateStatusController extends GetxController {
     // TODO: implement onInit
 
     statusC = TextEditingController();
+    super.onInit();
   }
 
   @override
   void onClose() {
     // TODO: implement onClose
-  
+
     statusC.dispose();
     super.onClose();
   }
