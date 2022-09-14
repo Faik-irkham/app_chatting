@@ -58,14 +58,12 @@ class SearchController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     searchC = TextEditingController();
     super.onInit();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     searchC.dispose();
     super.onClose();
   }

@@ -79,30 +79,37 @@ class SearchView extends GetView<SearchController> {
                 padding: EdgeInsets.zero,
                 itemCount: controller.tempSearch.length,
                 itemBuilder: (context, index) => ListTile(
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 15,
-                    horizontal: 20,
-                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   leading: CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.black26,
-                    child: Image.asset(
-                      'assets/logo/noimage.png',
-                      fit: BoxFit.cover,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child:
+                          controller.tempSearch[index]["photoUrl"] == "noimage"
+                              ? Image.asset(
+                                  "assets/logo/noimage.png",
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  controller.tempSearch[index]["photoUrl"],
+                                  fit: BoxFit.cover,
+                                ),
                     ),
                   ),
                   title: Text(
-                    '${controller.tempSearch[index]["name"]}',
+                    "${controller.tempSearch[index]["name"]}",
                     style: TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   subtitle: Text(
-                    '${controller.tempSearch[index]["email"]}',
+                    "${controller.tempSearch[index]["email"]}",
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   trailing: GestureDetector(
@@ -110,7 +117,7 @@ class SearchView extends GetView<SearchController> {
                       controller.tempSearch[index]["email"],
                     ),
                     child: Chip(
-                      label: Text('message'),
+                      label: Text("Message"),
                     ),
                   ),
                 ),

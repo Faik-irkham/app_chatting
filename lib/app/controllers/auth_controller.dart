@@ -2,6 +2,7 @@ import 'package:app_chatting/app/data/models/users_model.dart';
 import 'package:app_chatting/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -273,39 +274,67 @@ class AuthController extends GetxController {
     }
 
     if (flagNewConnection) {
-      final newChatDoc = await chats.add({
-        "connection": [
-          _currentUser!.email,
-          friendEmail,
+      // cek dari chats connections == mereka berdua
+      final chatsDocs = await chats.where(
+        "connection",
+        whereIn: [
+          [
+            _currentUser!.email,
+            friendEmail,
+          ],
+          [
+            friendEmail,
+            _currentUser!.email,
+          ],
         ],
-        "total_chats": 0,
-        "total_read": 0,
-        "total_unread": 0,
-        "chat": [],
-        "lastTime": date,
-      });
+      ).get();
 
-      await users.doc(_currentUser!.email).update({
-        "chats": [
-          {
-            "connection": friendEmail,
-            "chat_id": newChatDoc.id,
-            "lastTime": date,
-          }
-        ],
-      });
-      user.update((user) {
-        user!.chats = [
-          ChatUser(
-            chatId: newChatDoc.id,
-            connection: friendEmail,
-            lastTime: date,
-          )
-        ];
-      });
+      if (chatsDocs.docs.length != 0) {
+        // terdapat data chats dan tidak buat connection baru
+        final chatDataId = chatsDocs.docs[0].id;
+        final chatsData = chatsDocs.docs[0].data() as Map<String, dynamic>;
 
-      chat_id = newChatDoc.id;
-      user.refresh();
+        docChats.add({
+          "connection": friendEmail,
+          "chat_id": chatDataId,
+          "lastTime": chatsData["lastTime"],
+        });
+
+        await users.doc(_currentUser!.email).update({"chats": docChats});
+        user.update((user) {
+          user!.chats = docChats as List<ChatUser>;
+        });
+
+        chat_id = chatDataId;
+        user.refresh();
+      } else {
+        // tidak ada data chats dan buat connection baru
+        final newChatDoc = await chats.add({
+          "connection": [
+            _currentUser!.email,
+            friendEmail,
+          ],
+          "total_chats": 0,
+          "total_read": 0,
+          "total_unread": 0,
+          "chat": [],
+          "lastTime": date,
+        });
+
+        docChats.add({
+          "connection": friendEmail,
+          "chat_id": newChatDoc.id,
+          "lastTime": date,
+        });
+
+        await users.doc(_currentUser!.email).update({"chats": docChats});
+        user.update((user) {
+          user!.chats = docChats as List<ChatUser>;
+        });
+
+        chat_id = newChatDoc.id;
+        user.refresh();
+      }
     }
 
     print(chat_id);
