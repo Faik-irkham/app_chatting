@@ -402,8 +402,9 @@ class AuthController extends GetxController {
             _currentUser!.email,
             friendEmail,
           ],
-          "chat": [],
         });
+
+        await chats.doc(newChatDoc.id).collection("chats");
 
         await users
             .doc(_currentUser!.email)
@@ -447,6 +448,12 @@ class AuthController extends GetxController {
     }
 
     print(chat_id);
-    Get.toNamed(Routes.CHAT_ROOM, arguments: chat_id);
+    Get.toNamed(
+      Routes.CHAT_ROOM,
+      arguments: {
+        "chat_id": "$chat_id",
+        "friendEmail": friendEmail,
+      },
+    );
   }
 }

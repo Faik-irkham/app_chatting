@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_chatting/app/controllers/auth_controller.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 import '../controllers/chat_room_controller.dart';
 
 class ChatRoomView extends GetView<ChatRoomController> {
+  final authC = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +55,7 @@ class ChatRoomView extends GetView<ChatRoomController> {
       ),
       body: WillPopScope(
         onWillPop: () {
-          if(controller.isShowEmoji.isTrue) {
+          if (controller.isShowEmoji.isTrue) {
             controller.isShowEmoji.value = false;
           } else {
             Navigator.pop(context);
@@ -110,7 +112,11 @@ class ChatRoomView extends GetView<ChatRoomController> {
                     borderRadius: BorderRadius.circular(100),
                     color: Colors.teal,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () => controller.newChat(
+                        authC.user.value.email!,
+                        Get.arguments as Map<String, dynamic>, 
+                        controller.chatC.text,
+                        ),
                       child: Padding(
                         padding: const EdgeInsets.all(13),
                         child: Icon(
@@ -162,7 +168,8 @@ class ChatRoomView extends GetView<ChatRoomController> {
                           recentsLimit: 28,
                           noRecents: const Text(
                             'No Recents',
-                            style: TextStyle(fontSize: 20, color: Colors.black26),
+                            style:
+                                TextStyle(fontSize: 20, color: Colors.black26),
                             textAlign: TextAlign.center,
                           ),
                           tabIndicatorAnimDuration: kTabScrollDuration,

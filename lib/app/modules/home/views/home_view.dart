@@ -77,11 +77,17 @@ class HomeView extends GetView<HomeController> {
                             var data = snapshot2.data!.data();
                             return data!["status"] == ""
                                 ? ListTile(
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 5,
-                                  ),
-                                    onTap: () => Get.toNamed(Routes.CHAT_ROOM),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 5,
+                                    ),
+                                    onTap: () => Get.toNamed(
+                                      Routes.CHAT_ROOM,
+                                      arguments: {
+                                        "chat_id": "${listDocsChats[index].id}",
+                                        "friendEmail": listDocsChats[index]["connection"],
+                                        },
+                                    ),
                                     leading: CircleAvatar(
                                       radius: 30,
                                       backgroundColor: Colors.black26,
@@ -111,17 +117,23 @@ class HomeView extends GetView<HomeController> {
                                             0
                                         ? SizedBox()
                                         : Chip(
-                                          backgroundColor: Colors.teal,
+                                            backgroundColor: Colors.teal,
                                             label: Text(
                                                 '${listDocsChats[index]["total_unread"]}'),
                                           ),
                                   )
                                 : ListTile(
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 5,
-                                  ),
-                                    onTap: () => Get.toNamed(Routes.CHAT_ROOM),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 5,
+                                    ),
+                                    onTap: () => Get.toNamed(
+                                      Routes.CHAT_ROOM,
+                                      arguments: {
+                                        "chat_id": "${listDocsChats[index].id}",
+                                        "friendEmail": listDocsChats[index]["connection"],
+                                        },
+                                    ),
                                     leading: CircleAvatar(
                                       radius: 30,
                                       backgroundColor: Colors.black26,
@@ -158,7 +170,7 @@ class HomeView extends GetView<HomeController> {
                                             0
                                         ? SizedBox()
                                         : Chip(
-                                          backgroundColor: Colors.teal,
+                                            backgroundColor: Colors.teal,
                                             label: Text(
                                                 '${listDocsChats[index]["total_unread"]}'),
                                           ),
