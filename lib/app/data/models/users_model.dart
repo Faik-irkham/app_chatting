@@ -44,7 +44,6 @@ class UsersModel {
         photoUrl: json["photoUrl"],
         status: json["status"],
         updateTime: json["updateTime"],
-        chats: List<ChatUser>.from(json["chats"].map((x) => ChatUser.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -57,8 +56,7 @@ class UsersModel {
         "photoUrl": photoUrl,
         "status": status,
         "updateTime": updateTime,
-        "chats": List<dynamic>.from(chats!.map((x) => x.toJson())),
-      };
+        };
 }
 
 class ChatUser {
