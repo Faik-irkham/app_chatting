@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_chatting/app/controllers/auth_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ import '../controllers/chat_room_controller.dart';
 
 class ChatRoomView extends GetView<ChatRoomController> {
   final authC = Get.find<AuthController>();
+  final String chat_id = (Get.arguments as Map<String, dynamic>)["chat_id"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,11 +68,26 @@ class ChatRoomView extends GetView<ChatRoomController> {
           children: [
             Expanded(
               child: Container(
-                child: ListView(
-                  children: [
-                    ItemChat(isSender: true),
-                    ItemChat(isSender: false),
-                  ],
+                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: controller.streamChats(chat_id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      var alldata = snapshot.data!.docs;
+                      return ListView.builder(
+                        itemCount: alldata.length,
+                        itemBuilder: (context, index) => ItemChat(
+                          msg: "${alldata[index]["msg"]}",
+                          isSender: alldata[index]["pengirim"] ==
+                                  authC.user.value.email!
+                              ? true
+                              : false,
+                        ),
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
               ),
             ),
@@ -114,9 +131,9 @@ class ChatRoomView extends GetView<ChatRoomController> {
                     child: InkWell(
                       onTap: () => controller.newChat(
                         authC.user.value.email!,
-                        Get.arguments as Map<String, dynamic>, 
+                        Get.arguments as Map<String, dynamic>,
                         controller.chatC.text,
-                        ),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(13),
                         child: Icon(
@@ -190,9 +207,11 @@ class ItemChat extends StatelessWidget {
   const ItemChat({
     Key? key,
     required this.isSender,
+    required this.msg,
   }) : super(key: key);
 
   final bool isSender;
+  final String msg;
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +242,7 @@ class ItemChat extends StatelessWidget {
             ),
             padding: EdgeInsets.all(15),
             child: Text(
-              'Test chat masuk',
+              '$msg',
               style: TextStyle(
                 color: Colors.white,
               ),

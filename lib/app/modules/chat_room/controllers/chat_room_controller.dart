@@ -13,6 +13,12 @@ class ChatRoomController extends GetxController {
   late FocusNode focusNode;
   late TextEditingController chatC;
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String chat_id) {
+    CollectionReference chats = firestore.collection("chats");
+
+    return chats.doc(chat_id).collection("chat").orderBy("time").snapshots();
+  }
+
   void addEmojiToChat(Emoji emoji) {
     chatC.text = chatC.text + emoji.emoji;
   }
@@ -80,6 +86,8 @@ class ChatRoomController extends GetxController {
         "total_unread": 1,
       });
     }
+
+    chatC.clear();
   }
 
   @override
