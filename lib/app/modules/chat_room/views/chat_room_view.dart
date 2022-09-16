@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:app_chatting/app/controllers/auth_controller.dart';
@@ -29,30 +30,95 @@ class ChatRoomView extends GetView<ChatRoomController> {
               CircleAvatar(
                 radius: 24,
                 backgroundColor: Colors.grey,
-                child: Image.asset('assets/logo/noimage.png'),
+                child: StreamBuilder<DocumentSnapshot<Object?>>(
+                  stream: controller.StreamFriendData(
+                      (Get.arguments as Map<String, dynamic>)["friendEmail"]),
+                  builder: (context, snapFrienduser) {
+                    if (snapFrienduser.connectionState ==
+                        ConnectionState.active) {
+                      var dataFriend =
+                          snapFrienduser.data!.data() as Map<String, dynamic>;
+                      if (dataFriend["photoUrl"] == "noImage") {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.asset(
+                            'assets/logo/noimage.png',
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      } else {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.network(
+                            dataFriend["photoUrl"],
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      }
+                    }
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.asset(
+                        'assets/logo/noimage.png',
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
         ),
         backgroundColor: Colors.teal,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Nama Anda',
-              style: TextStyle(
-                fontSize: 19,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              'Status anda',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ],
+        title: StreamBuilder<DocumentSnapshot<Object?>>(
+          stream: controller.StreamFriendData(
+              (Get.arguments as Map<String, dynamic>)["friendEmail"]),
+          builder: (context, snapFrienduser) {
+            if (snapFrienduser.connectionState == ConnectionState.active) {
+              var dataFriend =
+                  snapFrienduser.data!.data() as Map<String, dynamic>;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    dataFriend["name"],
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    dataFriend["status"],
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Nama Anda',
+                  style: TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'Data User',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            );
+          },
         ),
+
+        //
         centerTitle: false,
       ),
       body: WillPopScope(
@@ -73,7 +139,13 @@ class ChatRoomView extends GetView<ChatRoomController> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
                       var alldata = snapshot.data!.docs;
+                      Timer(
+                        Duration.zero,
+                        () => controller.scrollC.jumpTo(
+                            controller.scrollC.position.maxScrollExtent),
+                      );
                       return ListView.builder(
+                        controller: controller.scrollC,
                         itemCount: alldata.length,
                         itemBuilder: (context, index) => ItemChat(
                           msg: "${alldata[index]["msg"]}",
@@ -81,6 +153,7 @@ class ChatRoomView extends GetView<ChatRoomController> {
                                   authC.user.value.email!
                               ? true
                               : false,
+                          time: "${alldata[index]["time"]}",
                         ),
                       );
                     }
@@ -107,7 +180,13 @@ class ChatRoomView extends GetView<ChatRoomController> {
                   Expanded(
                     child: Container(
                       child: TextField(
+                        autocorrect: false,
                         controller: controller.chatC,
+                        onEditingComplete: () => controller.newChat(
+                          authC.user.value.email!,
+                          Get.arguments as Map<String, dynamic>,
+                          controller.chatC.text,
+                        ),
                         focusNode: controller.focusNode,
                         decoration: InputDecoration(
                           prefixIcon: IconButton(
@@ -208,10 +287,12 @@ class ItemChat extends StatelessWidget {
     Key? key,
     required this.isSender,
     required this.msg,
+    required this.time,
   }) : super(key: key);
 
   final bool isSender;
   final String msg;
+  final String time;
 
   @override
   Widget build(BuildContext context) {
@@ -249,7 +330,7 @@ class ItemChat extends StatelessWidget {
             ),
           ),
           SizedBox(height: 5),
-          Text('12.23'),
+          Text("${DateTime.parse(time)}"),
         ],
       ),
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,

@@ -469,8 +469,8 @@ class AuthController extends GetxController {
         .collection("chats")
         .doc(chat_id)
         .update({
-          "total_unread": 0,
-        });
+      "total_unread": 0,
+    });
 
     Get.toNamed(
       Routes.CHAT_ROOM,
