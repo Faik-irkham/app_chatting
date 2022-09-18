@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_chatting/app/controllers/auth_controller.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
@@ -145,9 +147,55 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('no image'),
+                  GetBuilder<ChangeProfileController>(
+                    builder: (c) => c.pickedImage != null
+                        ? Column(
+                            children: [
+                              Container(
+                                height: 110,
+                                width: 125,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        image: DecorationImage(
+                                          image: FileImage(
+                                            File(controller.pickedImage!.path),
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: -10,
+                                      right: -5,
+                                      child: IconButton(
+                                        onPressed: () => c.resetImage(),
+                                        icon: Icon(Icons.delete),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'upload',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Text('no image'),
+                  ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => controller.selectImage(),
                     child: Text(
                       'choosen',
                       style: TextStyle(
