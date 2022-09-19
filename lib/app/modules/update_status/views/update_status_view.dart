@@ -12,7 +12,7 @@ class UpdateStatusView extends GetView<UpdateStatusController> {
     controller.statusC.text = authC.user.value.status!;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
+        backgroundColor: Get.isDarkMode ? Color(0XFF292929) : Colors.teal,
         title: Text('Update Status'),
         leading: IconButton(
           onPressed: () => Get.back(),
@@ -34,7 +34,7 @@ class UpdateStatusView extends GetView<UpdateStatusController> {
               decoration: InputDecoration(
                 labelText: 'status',
                 labelStyle: TextStyle(
-                  color: Colors.teal,
+                  color: Get.isDarkMode ? Colors.white : Colors.teal,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(100),

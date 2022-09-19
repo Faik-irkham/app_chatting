@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:app_chatting/app/controllers/auth_controller.dart';
 import 'package:app_chatting/app/routes/app_pages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,6 +11,19 @@ import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   final authC = Get.find<AuthController>();
+
+  final light = ThemeData(
+    brightness: Brightness.light,
+    primaryColor: Colors.white,
+    accentColor: Colors.black,
+    buttonColor: Colors.teal,
+  );
+  final dark = ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Color(0XFF292929),
+    accentColor: Colors.black,
+    buttonColor: Colors.teal,
+  );
 
   @override
   Widget build(BuildContext context) {

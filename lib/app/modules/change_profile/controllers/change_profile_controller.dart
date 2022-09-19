@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChangeProfileController extends GetxController {
-  //TODO: Implement ChangeProfileController
   late TextEditingController emailC;
   late TextEditingController nameC;
   late TextEditingController statusC;
@@ -56,7 +55,6 @@ class ChangeProfileController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     emailC = TextEditingController();
     nameC = TextEditingController();
     statusC = TextEditingController();
@@ -66,7 +64,6 @@ class ChangeProfileController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
     emailC.dispose();
     nameC.dispose();
     statusC.dispose();

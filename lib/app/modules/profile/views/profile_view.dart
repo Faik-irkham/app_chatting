@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:app_chatting/app/routes/app_pages.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +11,27 @@ import '../../../controllers/auth_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
   final authC = Get.find<AuthController>();
+
+  final light = ThemeData(
+    brightness: Brightness.light,
+    primaryColor: Colors.white,
+    accentColor: Colors.black,
+    buttonColor: Colors.teal,
+  );
+  final dark = ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Color(0XFF292929),
+    accentColor: Colors.black,
+    buttonColor: Colors.teal,
+  );
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Get.isDarkMode ? Color(0XFF292929) : Colors.teal,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.teal,
+        backgroundColor: Get.isDarkMode ? Color(0XFF292929) : Colors.teal,
         actions: [
           IconButton(
             onPressed: () => authC.logout(),
@@ -101,7 +117,7 @@ class ProfileView extends GetView<ProfileController> {
                     trailing: Icon(Icons.arrow_right),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () => Get.changeTheme(Get.isDarkMode ? light : dark),
                     leading: Icon(Icons.color_lens),
                     title: Text(
                       'Change Theme',
@@ -109,7 +125,7 @@ class ProfileView extends GetView<ProfileController> {
                         fontSize: 22,
                       ),
                     ),
-                    trailing: Text('Light'),
+                    trailing: Text(Get.isDarkMode ? 'dark' : 'light'),
                   ),
                 ],
               ),
@@ -124,13 +140,13 @@ class ProfileView extends GetView<ProfileController> {
                 Text(
                   'Chat App',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Get.isDarkMode ? Colors.white:Colors.black,
                   ),
                 ),
                 Text(
                   'V.1.0',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Get.isDarkMode ? Colors.white:Colors.black,
                   ),
                 ),
               ],

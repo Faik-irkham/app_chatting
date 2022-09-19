@@ -70,7 +70,7 @@ class ChatRoomView extends GetView<ChatRoomController> {
             ],
           ),
         ),
-        backgroundColor: Colors.teal,
+        backgroundColor: Get.isDarkMode ? Color(0XFF292929) : Colors.teal,
         title: StreamBuilder<DocumentSnapshot<Object?>>(
           stream: controller.StreamFriendData(
               (Get.arguments as Map<String, dynamic>)["friendEmail"]),
@@ -352,7 +352,7 @@ class ItemChat extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.teal,
+              color: isSender ?Colors.teal : Colors.black45,
               borderRadius: isSender
                   ? BorderRadius.only(
                       topLeft: Radius.circular(10),

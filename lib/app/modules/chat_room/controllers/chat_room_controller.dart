@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class ChatRoomController extends GetxController {
-  //TODO: Implement ChatRoomController
   var isShowEmoji = false.obs;
   int total_unread = 0;
 

@@ -18,7 +18,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
     controller.statusC.text = authC.user.value.status!;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
+        backgroundColor: Get.isDarkMode ? Color(0XFF292929) : Colors.teal,
         leading: IconButton(
           onPressed: () => Get.back(),
           icon: Icon(Icons.arrow_back),

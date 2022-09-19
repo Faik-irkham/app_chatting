@@ -13,7 +13,7 @@ class SearchView extends GetView<SearchController> {
     return Scaffold(
       appBar: PreferredSize(
         child: AppBar(
-          backgroundColor: Colors.teal,
+          backgroundColor: Get.isDarkMode ? Color(0XFF292929) : Colors.teal,
           title: Text('Search'),
           centerTitle: true,
           leading: IconButton(
@@ -56,7 +56,7 @@ class SearchView extends GetView<SearchController> {
                     onTap: () {},
                     child: Icon(
                       Icons.search,
-                      color: Colors.teal,
+                      color: Get.isDarkMode ? Color(0XFF292929) : Colors.teal,
                     ),
                   ),
                 ),

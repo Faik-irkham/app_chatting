@@ -7,7 +7,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
-  //TODO: Implement AuthController
 
   var isSkipIntro = false.obs;
   var isAuth = false.obs;
